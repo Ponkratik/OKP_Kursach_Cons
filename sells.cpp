@@ -391,7 +391,7 @@ void RouteCreate()
 		return;
 	}
 
-	cout << "Введите дату отправления: ";
+	cout << "Введите дату отправления (в формате DD.MM.YYYY): ";
 	cin >> temp.Date;
 	if (temp.Date == "-1")
 	{
@@ -400,7 +400,7 @@ void RouteCreate()
 		return;
 	}
 
-	cout << "Введите время отправления: ";
+	cout << "Введите время отправления (в формате HH:MM): ";
 	cin >> temp.DepTime;
 	if (temp.DepTime == "-1")
 	{
@@ -409,7 +409,7 @@ void RouteCreate()
 		return;
 	}
 
-	cout << "Введите время прибытия: ";
+	cout << "Введите время прибытия (в формате HH:MM): ";
 	cin >> temp.ArrTime;
 	if (temp.ArrTime == "-1")
 	{
@@ -427,7 +427,7 @@ void RouteCreate()
 		return;
 	}
 
-	cout << "Введите количество мест для продажи: ";
+	cout << "Введите количество билетов для реализации: ";
 	cin >> temp.TicketsLeft;
 	
 	temp.TicketsSold = 0;
@@ -467,10 +467,10 @@ void ShowAllRoutes()
 			RouteSpis = RouteSortByTime(RouteSpis);
 			
 			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
-			cout << "================================================================================" << endl;
+			cout << "=========================================================================" << endl;
 			for (int i = 0; i < RouteSpis.size(); i++)
 			{
-				cout << RouteSpis[i].RouteNumber << "\t" << RouteSpis[i].BusType << "\t" << RouteSpis[i].Destination << "\t" << RouteSpis[i].Date << "\t" << RouteSpis[i].DepTime << "\t" << RouteSpis[i].ArrTime << "\t" << RouteSpis[i].Price << "\t" << RouteSpis[i].TicketsLeft << "\t" << RouteSpis[i].TicketsSold << endl;
+				cout << RouteSpis[i].RouteNumber << "\t" << RouteSpis[i].BusType << "\t" << RouteSpis[i].Destination << "\t\t" << RouteSpis[i].Date << "\t" << RouteSpis[i].DepTime << "\t" << RouteSpis[i].ArrTime << "\t" << RouteSpis[i].Price << "\t" << RouteSpis[i].TicketsLeft << "\t" << RouteSpis[i].TicketsSold << endl;
 			}
 			cout << endl;
 			system("pause");
@@ -484,10 +484,10 @@ void ShowAllRoutes()
 			RouteSpis = RouteSort(RouteSpis);
 
 			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
-			cout << "================================================================================" << endl;
+			cout << "=========================================================================" << endl;
 			for (int i = 0; i < RouteSpis.size(); i++)
 			{
-				cout << RouteSpis[i].RouteNumber << "\t" << RouteSpis[i].BusType << "\t" << RouteSpis[i].Destination << "\t" << RouteSpis[i].Date << "\t" << RouteSpis[i].DepTime << "\t" << RouteSpis[i].ArrTime << "\t" << RouteSpis[i].Price << "\t" << RouteSpis[i].TicketsLeft << "\t" << RouteSpis[i].TicketsSold << endl;
+				cout << RouteSpis[i].RouteNumber << "\t" << RouteSpis[i].BusType << "\t" << RouteSpis[i].Destination << "\t\t" << RouteSpis[i].Date << "\t" << RouteSpis[i].DepTime << "\t" << RouteSpis[i].ArrTime << "\t" << RouteSpis[i].Price << "\t" << RouteSpis[i].TicketsLeft << "\t" << RouteSpis[i].TicketsSold << endl;
 			}
 			cout << endl;
 			system("pause");
@@ -520,7 +520,7 @@ vector<Routes> RouteSortByTime(vector<Routes> temp)
 	{
 		for (int j = 1; j < temp.size(); j++)
 		{
-			if ((temp[j].Destination == temp[j - 1].Destination) && (temp[j].Date != temp[j - 1].Date))
+			if (temp[j].Date != temp[j - 1].Date)
 			{
 				string s1 = "", s2 = "";
 				for (int k = 9; k >= 0; k--)
@@ -545,12 +545,34 @@ vector<Routes> RouteSortByTime(vector<Routes> temp)
 	{
 		for (int j = 1; j < temp.size(); j++)
 		{
-			if ((temp[j].Destination == temp[j - 1].Destination) && (temp[j].Date == temp[j - 1].Date) && (temp[j].DepTime < temp[j - 1].DepTime))
+			if (temp[j].Date == temp[j - 1].Date)
 			{
-				Routes t;
-				t = temp[j];
-				temp[j] = temp[j - 1];
-				temp[j - 1] = t;
+				string s1 = "", s2 = "";
+				s1.assign(temp[j].DepTime, 0, 2);
+				s2.assign(temp[j - 1].DepTime, 0, 2);
+				if (stoi(s1) < stoi(s2))
+				{
+					Routes t;
+					t = temp[j];
+					temp[j] = temp[j - 1];
+					temp[j - 1] = t;
+					continue;
+				}
+
+				if (stoi(s1) == stoi(s2))
+				{
+					string s3 = "", s4 = "";
+					s3.assign(temp[j].DepTime, 3, 2);
+					s4.assign(temp[j - 1].DepTime, 3, 2);
+					if (stoi(s3) < stoi(s4))
+					{
+						Routes t;
+						t = temp[j];
+						temp[j] = temp[j - 1];
+						temp[j - 1] = t;
+						continue;
+					}
+				}
 			}
 		}
 	}
@@ -605,12 +627,34 @@ vector<Routes> RouteSort(vector<Routes> temp)
 	{
 		for (int j = 1; j < temp.size(); j++)
 		{
-			if ((temp[j].Destination == temp[j - 1].Destination) && (temp[j].Date == temp[j - 1].Date) && (temp[j].DepTime < temp[j - 1].DepTime))
+			if (temp[j].Date == temp[j - 1].Date)
 			{
-				Routes t;
-				t = temp[j];
-				temp[j] = temp[j - 1];
-				temp[j - 1] = t;
+				string s1 = "", s2 = "";
+				s1.assign(temp[j].DepTime, 0, 2);
+				s2.assign(temp[j - 1].DepTime, 0, 2);
+				if (stoi(s1) < stoi(s2))
+				{
+					Routes t;
+					t = temp[j];
+					temp[j] = temp[j - 1];
+					temp[j - 1] = t;
+					continue;
+				}
+
+				if (stoi(s1) == stoi(s2))
+				{
+					string s3 = "", s4 = "";
+					s3.assign(temp[j].DepTime, 3, 2);
+					s4.assign(temp[j - 1].DepTime, 3, 2);
+					if (stoi(s3) < stoi(s4))
+					{
+						Routes t;
+						t = temp[j];
+						temp[j] = temp[j - 1];
+						temp[j - 1] = t;
+						continue;
+					}
+				}
 			}
 		}
 	}
