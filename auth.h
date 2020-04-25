@@ -8,5 +8,6 @@ int Authorisation();
 void Verification();
 void Ban(unsigned int);
 void GiveAdmin();
+void ShowAdmins();
 
 #endif

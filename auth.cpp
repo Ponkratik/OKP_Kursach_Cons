@@ -30,6 +30,7 @@ void FileExport(vector<UsersList>);
 void Verification();
 void Ban(unsigned int);
 void GiveAdmin();
+void ShowAdmins();
 
 int Loginning()
 {
@@ -627,4 +628,23 @@ void GiveAdmin()
 		cout << "Аккаунт с данным логином не был найден. Повторите попытку..." << endl;
 		system("pause");
 	}
+}
+
+void ShowAdmins()
+{
+	system("cls");
+
+	vector<UsersList> Users;
+	Users = FileImport();
+	
+	cout << "Логин администратора\tУровень" << endl;
+	cout << "=========================================" << endl;
+	for (unsigned int i = 0; i < Users.size(); i++)
+	{
+		if (Users[i].Role >= 2)
+		{
+			cout << Users[i].Login << "\t" << Users[i].Role << endl;
+		}
+	}
+	system("pause");
 }
