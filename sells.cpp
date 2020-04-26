@@ -33,6 +33,7 @@ vector<Routes> RouteSortByTime(vector<Routes>);
 vector<Routes> RouteSort(vector<Routes>);
 void ShowAllRoutes();
 void RouteFind();
+void SellTickets();
 
 void ShowMainMenu(int Role)
 {
@@ -121,8 +122,7 @@ void ShowMainMenu(int Role)
 			}
 			case '3':
 			{
-				system("cls");
-				cout << "3. Покупка билетов" << endl;
+				SellTickets();
 				break;
 			}
 			case '4':
@@ -187,8 +187,7 @@ void ShowMainMenu(int Role)
 			}
 			case '3':
 			{
-				system("cls");
-				cout << "3. Покупка билетов" << endl;
+				SellTickets();
 				break;
 			}
 			case '4':
@@ -314,8 +313,7 @@ void RoutesEditor()
 		system("cls");
 		cout << "1. Создать рейс" << endl;
 		cout << "2. Удалить рейс" << endl;
-		cout << "3. Добавить/сократить количество свободных мест на рейсе" << endl;
-		cout << "4. Вернуться назад" << endl;
+		cout << "3. Вернуться назад" << endl;
 
 		char choise;
 		cout << "\nВведите номер пункта меню: ";
@@ -334,11 +332,6 @@ void RoutesEditor()
 			break;
 		}
 		case '3':
-		{
-
-			break;
-		}
-		case '4':
 		{
 			returning = true;
 			break;
@@ -715,6 +708,143 @@ void RouteFind()
 		cout << endl;
 		system("pause");
 		return;
+	}
+}
+
+void SellTickets()
+{
+	system("cls");
+
+	vector<Routes> RoutesList;
+	RoutesList = RoutesImport();
+	RoutesList = RouteSort(RoutesList);
+
+	string TDestination;
+	cout << "Введите пункт назначения: ";
+	cin >> TDestination;
+	int kol = 0;
+	for (int i = 0; i < RoutesList.size(); i++)
+	{
+		if (RoutesList[i].Destination == TDestination)
+		{
+			kol++;
+		}
+	}
+
+	if (kol == 0)
+	{
+		cout << "Такого маршрута не существует." << endl;
+		system("pause");
+		return;
+	}
+
+	string TDate;
+	cout << "Введите дату отправления: ";
+	cin >> TDate;
+
+	kol = 0;
+	for (int i = 0; i < RoutesList.size(); i++)
+	{
+		if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
+		{
+			kol++;
+		}
+	}
+	if (kol == 0)
+	{
+		cout << "В этот день нет рейсов в заданный пункт назначения." << endl;
+		system("pause");
+		return;
+	}
+	else
+	{
+		int ind = 0, chosen = 0;
+		system("cls");
+		cout << "П/п№\t№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
+		cout << "=========================================================================" << endl;
+		for (int i = 0; i < RoutesList.size(); i++)
+		{
+			if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
+			{
+				cout << ind << "\t" << RoutesList[i].RouteNumber << "\t" << RoutesList[i].BusType << "\t" << RoutesList[i].Destination << "\t\t" << RoutesList[i].Date << "\t" << RoutesList[i].DepTime << "\t" << RoutesList[i].ArrTime << "\t" << RoutesList[i].Price << "\t" << RoutesList[i].TicketsLeft << "\t" << RoutesList[i].TicketsSold << endl;
+				ind++;
+			}
+		}
+		cout << endl;
+		
+		cout << "Введите порядковый номер рейса, на который вы хотите приобрести билет: ";
+		cin >> chosen;
+
+		system("cls");
+
+		if ((chosen >= ind) or (chosen < 0))
+		{
+			cout << "Вы ввели неправильный порядковый номер." << endl;
+			system("pause");
+			return;
+		}
+		
+		ind = -1;
+		for (unsigned int i = 0; i < RoutesList.size(); i++)
+		{
+			if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate) && (ind + 1 == chosen))
+			{
+				int kolplace;
+				cout << "Доступно для покупки " << RoutesList[i].TicketsLeft << " мест." << endl;
+				
+				while (true)
+				{
+					cout << "Введите количество мест для покупки: ";
+					cin >> kolplace;
+					if (kolplace == 0)
+					{
+						cout << "Вы прервали процесс покупки билета." << endl;
+						system("pause");
+						return;
+					}
+
+					if ((kolplace < 0) || (kolplace > RoutesList[i].TicketsLeft))
+					{
+						cout << "Вы ввели неверное количество. Повторите попытку." << endl;
+						system("pause");
+						continue;
+					}
+
+					break;
+				}
+
+				RoutesList[i].TicketsLeft -= kolplace;
+				RoutesList[i].TicketsSold += kolplace;
+				RoutesExport(RoutesList);
+				fstream TicketFile("ticket.txt", ios::out | ios::trunc);
+
+				for (int j = 0; j < kolplace; j++)
+				{
+					TicketFile << "Филиал Витебскоблавтотранс" << endl;
+					TicketFile << "Автовокзал г.Новополоцка" << endl;
+					TicketFile << "--------------------------" << endl;
+					TicketFile << "Номер маршрута: " << RoutesList[i].RouteNumber << endl;
+					TicketFile << "Пункт назначения: " << RoutesList[i].Destination << endl;
+					TicketFile << "Тип автобуса: " << RoutesList[i].BusType << endl;
+					TicketFile << "Дата отправления: " << RoutesList[i].Date << endl;
+					TicketFile << "Время отправления: " << RoutesList[i].DepTime << endl;
+					TicketFile << "Время прибытия: " << RoutesList[i].ArrTime << endl;
+					TicketFile << "Цена билета: " << RoutesList[i].Price << endl;
+					TicketFile << "--------------------------" << endl;
+					TicketFile << "Перевозчик: АТП №6 г.Новополоцка" << endl;
+					TicketFile << "==========================" << endl;
+				}
+
+				TicketFile.close();
+				cout << "Билет(ы) успешно приобретены" << endl;
+				system("pause");
+			}
+
+			if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
+			{
+				ind++;
+			}
+		}
 	}
 }
 
