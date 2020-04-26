@@ -457,7 +457,7 @@ void RouteDelete()
 	else
 	{
 		int kol = 0;
-		for (int i = 0; i < RoutesList.size(); i++)
+		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
 			if (RoutesList[i].RouteNumber == TRouteNumber)
 			{
@@ -473,7 +473,7 @@ void RouteDelete()
 		}
 		if (kol == 1)
 		{
-			for (int i = 0; i < RoutesList.size(); i++)
+			for (unsigned int i = 0; i < RoutesList.size(); i++)
 			{
 				if (RoutesList[i].RouteNumber == TRouteNumber)
 				{
@@ -501,7 +501,7 @@ void RouteDelete()
 	else
 	{
 		int kol = 0;
-		for (int i = 0; i < RoutesList.size(); i++)
+		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
 			if ((RoutesList[i].RouteNumber == TRouteNumber) && (RoutesList[i].Date == TDate))
 			{
@@ -517,7 +517,7 @@ void RouteDelete()
 		}
 		if (kol == 1)
 		{
-			for (int i = 0; i < RoutesList.size(); i++)
+			for (unsigned int i = 0; i < RoutesList.size(); i++)
 			{
 				if ((RoutesList[i].RouteNumber == TRouteNumber) && (RoutesList[i].Date == TDate))
 				{
@@ -545,7 +545,7 @@ void RouteDelete()
 	else
 	{
 		int kol = 0;
-		for (int i = 0; i < RoutesList.size(); i++)
+		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
 			if ((RoutesList[i].RouteNumber == TRouteNumber) && (RoutesList[i].Date == TDate) && (RoutesList[i].DepTime == TDepTime))
 			{
@@ -561,7 +561,7 @@ void RouteDelete()
 		}
 		if (kol == 1)
 		{
-			for (int i = 0; i < RoutesList.size(); i++)
+			for (unsigned int i = 0; i < RoutesList.size(); i++)
 			{
 				if ((RoutesList[i].RouteNumber == TRouteNumber) && (RoutesList[i].Date == TDate) && (RoutesList[i].DepTime == TDepTime))
 				{
@@ -603,7 +603,7 @@ void ShowAllRoutes()
 			
 			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
 			cout << "=========================================================================" << endl;
-			for (int i = 0; i < RouteSpis.size(); i++)
+			for (unsigned int i = 0; i < RouteSpis.size(); i++)
 			{
 				cout << RouteSpis[i].RouteNumber << "\t" << RouteSpis[i].BusType << "\t" << RouteSpis[i].Destination << "\t\t" << RouteSpis[i].Date << "\t" << RouteSpis[i].DepTime << "\t" << RouteSpis[i].ArrTime << "\t" << RouteSpis[i].Price << "\t" << RouteSpis[i].TicketsLeft << "\t" << RouteSpis[i].TicketsSold << endl;
 			}
@@ -620,7 +620,7 @@ void ShowAllRoutes()
 
 			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
 			cout << "=========================================================================" << endl;
-			for (int i = 0; i < RouteSpis.size(); i++)
+			for (unsigned int i = 0; i < RouteSpis.size(); i++)
 			{
 				cout << RouteSpis[i].RouteNumber << "\t" << RouteSpis[i].BusType << "\t" << RouteSpis[i].Destination << "\t\t" << RouteSpis[i].Date << "\t" << RouteSpis[i].DepTime << "\t" << RouteSpis[i].ArrTime << "\t" << RouteSpis[i].Price << "\t" << RouteSpis[i].TicketsLeft << "\t" << RouteSpis[i].TicketsSold << endl;
 			}
@@ -660,7 +660,7 @@ void RouteFind()
 	cout << "Введите пункт назначения: ";
 	cin >> TDestination;
 	int kol = 0;
-	for (int i = 0; i < RoutesList.size(); i++)
+	for (unsigned int i = 0; i < RoutesList.size(); i++)
 	{
 		if (RoutesList[i].Destination == TDestination)
 		{
@@ -680,7 +680,7 @@ void RouteFind()
 	cin >> TDate;
 
 	kol = 0;
-	for (int i = 0; i < RoutesList.size(); i++)
+	for (unsigned int i = 0; i < RoutesList.size(); i++)
 	{
 		if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
 		{
@@ -698,7 +698,7 @@ void RouteFind()
 		system("cls");
 		cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
 		cout << "=========================================================================" << endl;
-		for (int i = 0; i < RoutesList.size(); i++)
+		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
 			if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
 			{
@@ -723,7 +723,7 @@ void SellTickets()
 	cout << "Введите пункт назначения: ";
 	cin >> TDestination;
 	int kol = 0;
-	for (int i = 0; i < RoutesList.size(); i++)
+	for (unsigned int i = 0; i < RoutesList.size(); i++)
 	{
 		if (RoutesList[i].Destination == TDestination)
 		{
@@ -743,7 +743,7 @@ void SellTickets()
 	cin >> TDate;
 
 	kol = 0;
-	for (int i = 0; i < RoutesList.size(); i++)
+	for (unsigned int i = 0; i < RoutesList.size(); i++)
 	{
 		if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
 		{
@@ -762,7 +762,7 @@ void SellTickets()
 		system("cls");
 		cout << "П/п№\t№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
 		cout << "=========================================================================" << endl;
-		for (int i = 0; i < RoutesList.size(); i++)
+		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
 			if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
 			{
@@ -803,7 +803,7 @@ void SellTickets()
 						return;
 					}
 
-					if ((kolplace < 0) || (kolplace > RoutesList[i].TicketsLeft))
+					if ((kolplace < 0) || ((unsigned int)kolplace > RoutesList[i].TicketsLeft))
 					{
 						cout << "Вы ввели неверное количество. Повторите попытку." << endl;
 						system("pause");
@@ -851,9 +851,9 @@ void SellTickets()
 vector<Routes> RouteSortByTime(vector<Routes> temp)
 {
 	//sort by Date
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
-		for (int j = 1; j < temp.size(); j++)
+		for (unsigned int j = 1; j < temp.size(); j++)
 		{
 			if (temp[j].Date != temp[j - 1].Date)
 			{
@@ -876,9 +876,9 @@ vector<Routes> RouteSortByTime(vector<Routes> temp)
 	}
 
 	//sort by DepTime
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
-		for (int j = 1; j < temp.size(); j++)
+		for (unsigned int j = 1; j < temp.size(); j++)
 		{
 			if (temp[j].Date == temp[j - 1].Date)
 			{
@@ -918,9 +918,9 @@ vector<Routes> RouteSortByTime(vector<Routes> temp)
 vector<Routes> RouteSort(vector<Routes> temp)
 {
 	//sort by Destination
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
-		for (int j = 1; j < temp.size(); j++)
+		for (unsigned int j = 1; j < temp.size(); j++)
 		{
 			if (temp[j].Destination < temp[j - 1].Destination)
 			{
@@ -933,9 +933,9 @@ vector<Routes> RouteSort(vector<Routes> temp)
 	}
 
 	//sort by Date
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
-		for (int j = 1; j < temp.size(); j++)
+		for (unsigned int j = 1; j < temp.size(); j++)
 		{
 			if ((temp[j].Destination == temp[j - 1].Destination) && (temp[j].Date != temp[j - 1].Date))
 			{
@@ -958,9 +958,9 @@ vector<Routes> RouteSort(vector<Routes> temp)
 	}
 
 	//sort by DepTime
-	for (int i = 0; i < temp.size(); i++)
+	for (unsigned int i = 0; i < temp.size(); i++)
 	{
-		for (int j = 1; j < temp.size(); j++)
+		for (unsigned int j = 1; j < temp.size(); j++)
 		{
 			if ((temp[j].Destination == temp[j - 1].Destination) && (temp[j].Date == temp[j - 1].Date))
 			{
