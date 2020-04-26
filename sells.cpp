@@ -32,6 +32,7 @@ void RouteDelete();
 vector<Routes> RouteSortByTime(vector<Routes>);
 vector<Routes> RouteSort(vector<Routes>);
 void ShowAllRoutes();
+void RouteFind();
 
 void ShowMainMenu(int Role)
 {
@@ -56,8 +57,7 @@ void ShowMainMenu(int Role)
 			{
 			case '1':
 			{
-				system("cls");
-				cout << "1. Поиск рейса" << endl;
+				RouteFind();
 				break;
 			}
 			case '2':
@@ -111,8 +111,7 @@ void ShowMainMenu(int Role)
 			{
 			case '1':
 			{
-				system("cls");
-				cout << "1. Поиск рейса" << endl;
+				RouteFind();
 				break;
 			}
 			case '2':
@@ -178,8 +177,7 @@ void ShowMainMenu(int Role)
 			}
 			case '1':
 			{
-				system("cls");
-				cout << "1. Поиск рейса" << endl;
+				RouteFind();
 				break;
 			}
 			case '2':
@@ -654,6 +652,69 @@ void ShowAllRoutes()
 		{
 			break;
 		}
+	}
+}
+
+void RouteFind()
+{
+	system("cls");
+
+	vector<Routes> RoutesList;
+	RoutesList = RoutesImport();
+	RoutesList = RouteSort(RoutesList);
+
+	string TDestination;
+	cout << "Введите пункт назначения: ";
+	cin >> TDestination;
+	int kol = 0;
+	for (int i = 0; i < RoutesList.size(); i++)
+	{
+		if (RoutesList[i].Destination == TDestination)
+		{
+			kol++;
+		}
+	}
+
+	if (kol == 0)
+	{
+		cout << "Такого маршрута не существует." << endl;
+		system("pause");
+		return;
+	}
+
+	string TDate;
+	cout << "Введите дату отправления: ";
+	cin >> TDate;
+
+	kol = 0;
+	for (int i = 0; i < RoutesList.size(); i++)
+	{
+		if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
+		{
+			kol++;
+		}
+	}
+	if (kol == 0)
+	{
+		cout << "В этот день нет рейсов в заданный пункт назначения." << endl;
+		system("pause");
+		return;
+	}
+	else
+	{
+		system("cls");
+		cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
+		cout << "=========================================================================" << endl;
+		for (int i = 0; i < RoutesList.size(); i++)
+		{
+			if ((RoutesList[i].Destination == TDestination) && (RoutesList[i].Date == TDate))
+			{
+				cout << RoutesList[i].RouteNumber << "\t" << RoutesList[i].BusType << "\t" << RoutesList[i].Destination << "\t\t" << RoutesList[i].Date << "\t" << RoutesList[i].DepTime << "\t" << RoutesList[i].ArrTime << "\t" << RoutesList[i].Price << "\t" << RoutesList[i].TicketsLeft << "\t" << RoutesList[i].TicketsSold << endl;
+			}
+		}
+		cout << endl;
+		system("pause");
+		return;
 	}
 }
 
