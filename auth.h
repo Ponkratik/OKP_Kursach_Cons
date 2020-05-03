@@ -7,7 +7,9 @@ bool Registration();
 int Authorisation();
 void Verification();
 void Ban(unsigned int);
-void GiveAdmin();
+void GiveAdmin(unsigned int);
 void ShowAdmins();
+void ShowUsers();
+void DeleteAccount();
 
 #endif

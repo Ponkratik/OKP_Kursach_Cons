@@ -30,6 +30,7 @@ void RoutesEditor();
 void RouteCreate();
 void RouteDelete();
 vector<Routes> RouteSortByTime(vector<Routes>);
+vector<Routes> RouteSortByRouteNumber(vector<Routes>);
 vector<Routes> RouteSort(vector<Routes>);
 void ShowAllRoutes();
 void RouteFind();
@@ -231,7 +232,10 @@ void AdminPanel(int Role)
 		cout << "3. Разбан аккаунта" << endl;
 		cout << "4. Меню маршрутов" << endl;
 		cout << "5. Показать всех администраторов" << endl;
-		cout << "6. Вернуться в главное меню" << endl;
+		cout << "6. Показать всех пользователей" << endl;
+		cout << "7. Снять администратора" << endl;
+		cout << "8. Удалить аккаунт" << endl;
+		cout << "9. Вернуться в главное меню" << endl;
 
 		char choise;
 		cout << "\nВведите номер пункта меню: ";
@@ -243,7 +247,7 @@ void AdminPanel(int Role)
 		{
 			if (Role == 3)
 			{
-				GiveAdmin();
+				GiveAdmin(1);
 			}
 			else
 			{
@@ -287,6 +291,37 @@ void AdminPanel(int Role)
 		}
 		case '6':
 		{
+			ShowUsers();
+			break;
+		}
+		case '7':
+		{
+			if (Role == 3)
+			{
+				GiveAdmin(2);
+			}
+			else
+			{
+				cout << "Вы имеете недостаточный уровень администратора для доступа к данному разделу." << endl;
+				system("pause");
+			}
+			break;
+		}
+		case '8':
+		{
+			if (Role == 3)
+			{
+				DeleteAccount();
+			}
+			else
+			{
+				cout << "Вы имеете недостаточный уровень администратора для доступа к данному разделу." << endl;
+				system("pause");
+			}
+			break;
+		}
+		case '9':
+		{
 			returning = true;
 			break;
 		}
@@ -313,7 +348,8 @@ void RoutesEditor()
 		system("cls");
 		cout << "1. Создать рейс" << endl;
 		cout << "2. Удалить рейс" << endl;
-		cout << "3. Вернуться назад" << endl;
+		cout << "3. Редактировать рейс" << endl;
+		cout << "4. Вернуться назад" << endl;
 
 		char choise;
 		cout << "\nВведите номер пункта меню: ";
@@ -332,6 +368,11 @@ void RoutesEditor()
 			break;
 		}
 		case '3':
+		{
+			
+			break;
+		}
+		case '4':
 		{
 			returning = true;
 			break;
@@ -456,7 +497,7 @@ void RouteDelete()
 	}
 	else
 	{
-		int kol = 0;
+		int kol = -1;
 		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
 			if (RoutesList[i].RouteNumber == TRouteNumber)
@@ -465,27 +506,39 @@ void RouteDelete()
 			}
 		}
 
-		if (kol == 0)
+		if (kol == -1)
 		{
 			cout << "Такого маршрута не существует." << endl;
 			system("pause");
 			return;
 		}
-		if (kol == 1)
+		if (kol == 0)
 		{
 			for (unsigned int i = 0; i < RoutesList.size(); i++)
 			{
 				if (RoutesList[i].RouteNumber == TRouteNumber)
 				{
 					kol = i;
+					break;
 				}
 			}
 
-			RoutesList.erase(RoutesList.begin() + kol);
-			RoutesExport(RoutesList);
-			cout << "Маршрут успешно удалён." << endl;
-			system("pause");
-			return;
+			cout << "Введите 1, если вы действительно хотите удалить этот маршрут: ";
+			cin >> TRouteNumber;
+			if (TRouteNumber == "1")
+			{
+				RoutesList.erase(RoutesList.begin() + kol);
+				RoutesExport(RoutesList);
+				cout << "Маршрут успешно удалён." << endl;
+				system("pause");
+				return;
+			}
+			else
+			{
+				cout << "Вы прервали процесс удаления маршрута" << endl;
+				system("pause");
+				return;
+			}
 		}
 	}
 
@@ -500,7 +553,7 @@ void RouteDelete()
 	}
 	else
 	{
-		int kol = 0;
+		int kol = -1;
 		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
 			if ((RoutesList[i].RouteNumber == TRouteNumber) && (RoutesList[i].Date == TDate))
@@ -509,27 +562,39 @@ void RouteDelete()
 			}
 		}
 
-		if (kol == 0)
+		if (kol == -1)
 		{
 			cout << "Такого маршрута не существует." << endl;
 			system("pause");
 			return;
 		}
-		if (kol == 1)
+		if (kol == 0)
 		{
 			for (unsigned int i = 0; i < RoutesList.size(); i++)
 			{
 				if ((RoutesList[i].RouteNumber == TRouteNumber) && (RoutesList[i].Date == TDate))
 				{
 					kol = i;
+					break;
 				}
 			}
 
-			RoutesList.erase(RoutesList.begin() + kol);
-			RoutesExport(RoutesList);
-			cout << "Маршрут успешно удалён." << endl;
-			system("pause");
-			return;
+			cout << "Введите 1, если вы действительно хотите удалить этот маршрут: ";
+			cin >> TDate;
+			if (TDate == "1")
+			{
+				RoutesList.erase(RoutesList.begin() + kol);
+				RoutesExport(RoutesList);
+				cout << "Маршрут успешно удалён." << endl;
+				system("pause");
+				return;
+			}
+			else
+			{
+				cout << "Вы прервали процесс удаления маршрута" << endl;
+				system("pause");
+				return;
+			}
 		}
 	}
 
@@ -544,7 +609,7 @@ void RouteDelete()
 	}
 	else
 	{
-		int kol = 0;
+		int kol = -1;
 		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
 			if ((RoutesList[i].RouteNumber == TRouteNumber) && (RoutesList[i].Date == TDate) && (RoutesList[i].DepTime == TDepTime))
@@ -553,27 +618,39 @@ void RouteDelete()
 			}
 		}
 
-		if (kol == 0)
+		if (kol == -1)
 		{
 			cout << "Такого маршрута не существует." << endl;
 			system("pause");
 			return;
 		}
-		if (kol == 1)
+		if (kol == 0)
 		{
 			for (unsigned int i = 0; i < RoutesList.size(); i++)
 			{
 				if ((RoutesList[i].RouteNumber == TRouteNumber) && (RoutesList[i].Date == TDate) && (RoutesList[i].DepTime == TDepTime))
 				{
 					kol = i;
+					break;
 				}
 			}
 
-			RoutesList.erase(RoutesList.begin() + kol);
-			RoutesExport(RoutesList);
-			cout << "Маршрут успешно удалён." << endl;
-			system("pause");
-			return;
+			cout << "Введите 1, если вы действительно хотите удалить этот маршрут: ";
+			cin >> TDepTime;
+			if (TDepTime == "1")
+			{
+				RoutesList.erase(RoutesList.begin() + kol);
+				RoutesExport(RoutesList);
+				cout << "Маршрут успешно удалён." << endl;
+				system("pause");
+				return;
+			}
+			else
+			{
+				cout << "Вы прервали процесс удаления маршрута" << endl;
+				system("pause");
+				return;
+			}
 		}
 	}
 }
@@ -586,7 +663,8 @@ void ShowAllRoutes()
 		system("cls");
 		cout << "1. Сортировка по времени отправления" << endl;
 		cout << "2. Сортировка по пункту назначения" << endl;
-		cout << "3. Вернуться назад" << endl;
+		cout << "3. Сортировка по номеру маршрута" << endl;
+		cout << "4. Вернуться назад" << endl;
 
 		char choise;
 		cout << "\nВведите номер пункта меню: ";
@@ -629,6 +707,23 @@ void ShowAllRoutes()
 			break;
 		}
 		case '3':
+		{
+			system("cls");
+			vector<Routes> RouteSpis;
+			RouteSpis = RoutesImport();
+			RouteSpis = RouteSortByRouteNumber(RouteSpis);
+
+			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
+			cout << "=========================================================================" << endl;
+			for (unsigned int i = 0; i < RouteSpis.size(); i++)
+			{
+				cout << RouteSpis[i].RouteNumber << "\t" << RouteSpis[i].BusType << "\t" << RouteSpis[i].Destination << "\t\t" << RouteSpis[i].Date << "\t" << RouteSpis[i].DepTime << "\t" << RouteSpis[i].ArrTime << "\t" << RouteSpis[i].Price << "\t" << RouteSpis[i].TicketsLeft << "\t" << RouteSpis[i].TicketsSold << endl;
+			}
+			cout << endl;
+			system("pause");
+			break;
+		}
+		case '4':
 		{
 			returning = true;
 			break;
@@ -881,6 +976,118 @@ vector<Routes> RouteSortByTime(vector<Routes> temp)
 		for (unsigned int j = 1; j < temp.size(); j++)
 		{
 			if (temp[j].Date == temp[j - 1].Date)
+			{
+				string s1 = "", s2 = "";
+				s1.assign(temp[j].DepTime, 0, 2);
+				s2.assign(temp[j - 1].DepTime, 0, 2);
+				if (stoi(s1) < stoi(s2))
+				{
+					Routes t;
+					t = temp[j];
+					temp[j] = temp[j - 1];
+					temp[j - 1] = t;
+					continue;
+				}
+
+				if (stoi(s1) == stoi(s2))
+				{
+					string s3 = "", s4 = "";
+					s3.assign(temp[j].DepTime, 3, 2);
+					s4.assign(temp[j - 1].DepTime, 3, 2);
+					if (stoi(s3) < stoi(s4))
+					{
+						Routes t;
+						t = temp[j];
+						temp[j] = temp[j - 1];
+						temp[j - 1] = t;
+						continue;
+					}
+				}
+			}
+		}
+	}
+
+	return temp;
+}
+
+vector<Routes> RouteSortByRouteNumber(vector<Routes> temp)
+{
+	//sort by RouteNumber
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		for (unsigned int j = 1; j < temp.size(); j++)
+		{
+			if (temp[j].RouteNumber != temp[j].RouteNumber)
+			{
+				string s1 = "", s2 = "";
+
+				for (int k = temp[j].RouteNumber.length(); k >= 0; k--)
+				{
+					s1 += temp[j].RouteNumber[k];
+				}
+
+				for (int k = temp[j-1].RouteNumber.length(); k >= 0; k--)
+				{
+					s1 += temp[j-1].RouteNumber[k];
+				}
+
+				if (s1 < s2)
+				{
+					Routes t;
+					t = temp[j];
+					temp[j] = temp[j - 1];
+					temp[j - 1] = t;
+				}
+			}
+		}
+	}
+	
+	//sort by Destination
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		for (unsigned int j = 1; j < temp.size(); j++)
+		{
+			if ((temp[j].RouteNumber == temp[j].RouteNumber) && (temp[j].Destination < temp[j - 1].Destination))
+			{
+				Routes t;
+				t = temp[j];
+				temp[j] = temp[j - 1];
+				temp[j - 1] = t;
+			}
+		}
+	}
+
+	//sort by Date
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		for (unsigned int j = 1; j < temp.size(); j++)
+		{
+			if ((temp[j].RouteNumber == temp[j].RouteNumber) && (temp[j].Destination == temp[j - 1].Destination) && (temp[j].Date != temp[j - 1].Date))
+			{
+				string s1 = "", s2 = "";
+				for (int k = 9; k >= 0; k--)
+				{
+					s1 += temp[j].Date[k];
+					s2 += temp[j - 1].Date[k];
+				}
+
+				if (s1 < s2)
+				{
+					Routes t;
+					t = temp[j];
+					temp[j] = temp[j - 1];
+					temp[j - 1] = t;
+				}
+			}
+		}
+	}
+
+	//sort by DepTime
+	for (unsigned int i = 0; i < temp.size(); i++)
+	{
+		for (unsigned int j = 1; j < temp.size(); j++)
+		{
+			if ((temp[j].RouteNumber == temp[j].RouteNumber) && (temp[j].Destination == temp[j - 1].Destination) && (temp[j].Date == temp[j - 1].Date))
 			{
 				string s1 = "", s2 = "";
 				s1.assign(temp[j].DepTime, 0, 2);

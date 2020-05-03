@@ -29,8 +29,10 @@ vector<UsersList> FileImport();
 void FileExport(vector<UsersList>);
 void Verification();
 void Ban(unsigned int);
-void GiveAdmin();
+void GiveAdmin(unsigned int);
 void ShowAdmins();
+void ShowUsers();
+void DeleteAccount();
 
 int Loginning()
 {
@@ -107,7 +109,8 @@ bool Registration()
 	cin >> TempLogin;
 	if (TempLogin == "-1")
 	{
-		cout << "Вы прервали регистрацию.";
+		cout << "Вы прервали регистрацию" << endl;
+		system("pause");
 		return true;
 	}
 	else
@@ -130,7 +133,8 @@ bool Registration()
 		TempPassword = InPass();
 		if (TempPassword == "-1")
 		{
-			cout << "Вы прервали регистрацию.";
+			cout << "Вы прервали регистрацию" << endl;
+			system("pause");
 			return true;
 		}
 		else
@@ -581,7 +585,7 @@ void Ban(unsigned int action)
 	}
 }
 
-void GiveAdmin()
+void GiveAdmin(unsigned int ind)
 {
 	system("cls");
 
@@ -589,44 +593,87 @@ void GiveAdmin()
 
 	UserSpis = FileImport();
 
-	cout << "Если Вы хотите прервать процесс верификации аккаунта, введите '-1'" << endl;
+	cout << "Если Вы хотите прервать процесс, введите '-1'" << endl;
 
-	while (true)
+	if (ind == 1)
 	{
-		string TempLogin;
-		cout << "Введите логин аккаунта для выдачи админ-прав: ";
-		cin >> TempLogin;
-
-		if (TempLogin == "-1")
+		while (true)
 		{
-			cout << "Вы вышли из меню выдачи админ-прав." << endl;
-			system("pause");
-			return;
-		}
+			string TempLogin;
+			cout << "Введите логин аккаунта для выдачи админ-прав: ";
+			cin >> TempLogin;
 
-		for (unsigned int i = 0; i < UserSpis.size(); i++)
-		{
-			if (UserSpis[i].Login == TempLogin)
+			if (TempLogin == "-1")
 			{
-				if (UserSpis[i].Role == 2 || UserSpis[i].Role == 3)
-				{
-					cout << "Аккаунт с логином " << UserSpis[i].Login << " уже является администратором." << endl;
-					system("pause");
-					return;
-				}
-
-				UserSpis[i].Access = 1;
-				UserSpis[i].Role = 2;
-
-				cout << "Аккаунту с логином " << UserSpis[i].Login << " были выданы админ-права." << endl;
-				FileExport(UserSpis);
+				cout << "Вы вышли из меню выдачи админ-прав." << endl;
 				system("pause");
 				return;
 			}
-		}
 
-		cout << "Аккаунт с данным логином не был найден. Повторите попытку..." << endl;
-		system("pause");
+			for (unsigned int i = 0; i < UserSpis.size(); i++)
+			{
+				if (UserSpis[i].Login == TempLogin)
+				{
+					if (UserSpis[i].Role == 2 || UserSpis[i].Role == 3)
+					{
+						cout << "Аккаунт с логином " << UserSpis[i].Login << " уже является администратором." << endl;
+						system("pause");
+						return;
+					}
+	
+					UserSpis[i].Access = 1;
+					UserSpis[i].Role = 2;
+	
+					cout << "Аккаунту с логином " << UserSpis[i].Login << " были выданы админ-права." << endl;
+					FileExport(UserSpis);
+					system("pause");
+					return;
+				}
+			}
+	
+			cout << "Аккаунт с данным логином не был найден. Повторите попытку..." << endl;
+			system("pause");
+		}
+	}
+	else
+	{
+		while (true)
+		{
+			string TempLogin;
+			cout << "Введите логин аккаунта для снятия админ-прав: ";
+			cin >> TempLogin;
+
+			if (TempLogin == "-1")
+			{
+				cout << "Вы вышли из меню снятия админ-прав." << endl;
+				system("pause");
+				return;
+			}
+
+			for (unsigned int i = 0; i < UserSpis.size(); i++)
+			{
+				if (UserSpis[i].Login == TempLogin)
+				{
+					if (UserSpis[i].Role == 2)
+					{
+						UserSpis[i].Access = 1;
+						UserSpis[i].Role = 1;
+
+						cout << "Аккаунту с логином " << UserSpis[i].Login << " были сняты админ-права." << endl;
+						FileExport(UserSpis);
+						system("pause");
+						return;
+					}
+					
+					cout << "Аккаунт с логином " << UserSpis[i].Login << " не является администратором." << endl;
+					system("pause");
+					return;
+				}
+			}
+
+			cout << "Аккаунт с данным логином не был найден. Повторите попытку..." << endl;
+			system("pause");
+		}
 	}
 }
 
@@ -637,14 +684,89 @@ void ShowAdmins()
 	vector<UsersList> Users;
 	Users = FileImport();
 	
-	cout << "Логин администратора\tУровень" << endl;
+	cout << "Логин\t\tУровень" << endl;
 	cout << "=========================================" << endl;
 	for (unsigned int i = 0; i < Users.size(); i++)
 	{
 		if (Users[i].Role >= 2)
 		{
-			cout << Users[i].Login << "\t" << Users[i].Role << endl;
+			cout << Users[i].Login << "\t\t" << Users[i].Role << endl;
 		}
 	}
 	system("pause");
+}
+
+void ShowUsers()
+{
+	system("cls");
+
+	vector<UsersList> Users;
+	Users = FileImport();
+
+	cout << "Логин\t\tУровень" << endl;
+	cout << "=========================================" << endl;
+	for (unsigned int i = 0; i < Users.size(); i++)
+	{
+		cout << Users[i].Login << "\t\t" << Users[i].Role << endl;
+	}
+	system("pause");
+}
+
+void DeleteAccount()
+{
+	system("cls");
+
+	vector<UsersList> UserSpis;
+	UserSpis = FileImport();
+
+	cout << "Вы попали в меню удаления аккаунтов" << endl;
+	cout << "Если вы хотите прервать операцию удаления, введите '-1'" << endl;
+
+	string TempLogin;
+	cout << "Введите логин аккаунта для удаления: ";
+	cin >> TempLogin;
+	if (TempLogin == "-1")
+	{
+		cout << "Вы прервали процесс удаления аккаунта" << endl;
+		system("pause");
+		return;
+	}
+	else
+	{
+		int kol = -1;
+		for (unsigned int i = 0; i < UserSpis.size(); i++)
+		{
+			if (UserSpis[i].Login == TempLogin)
+			{
+				kol = i;
+				break;
+			}
+		}
+
+		if (kol == -1 || UserSpis[kol].Role == 3)
+		{
+			cout << "Такого аккаунта не существует или вы пытаетесь удалить свой аккаунт" << endl;
+			system("pause");
+			return;
+		}
+		else
+		{
+			cout << "Введите 1, если вы действительно хотите удалить этот аккаунт: ";
+			cin >> TempLogin;
+			if (TempLogin == "1")
+			{
+				UserSpis.erase(UserSpis.begin() + kol);
+				FileExport(UserSpis);
+				cout << "Аккаунт успешно удалён." << endl;
+				system("pause");
+				return;
+			}
+			else
+			{
+				cout << "Вы прервали процесс удаления аккаунты" << endl;
+				system("pause");
+				return;
+			}
+		}
+	}
 }
