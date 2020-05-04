@@ -26,9 +26,10 @@ void ShowMainMenu(int);
 void RoutesExport(vector<Routes>);
 vector<Routes> RoutesImport();
 void AdminPanel(int);
-void RoutesEditor();
+void RoutesMenu();
 void RouteCreate();
 void RouteDelete();
+void RouteEdit();
 vector<Routes> RouteSortByTime(vector<Routes>);
 vector<Routes> RouteSortByRouteNumber(vector<Routes>);
 vector<Routes> RouteSort(vector<Routes>);
@@ -226,15 +227,16 @@ void AdminPanel(int Role)
 	{
 		bool returning = false;
 		system("cls");
+
 		cout << "0. Назначить администратора" << endl;
-		cout << "1. Верификация аккаунта" << endl;
-		cout << "2. Бан аккаунта" << endl;
-		cout << "3. Разбан аккаунта" << endl;
-		cout << "4. Меню маршрутов" << endl;
-		cout << "5. Показать всех администраторов" << endl;
-		cout << "6. Показать всех пользователей" << endl;
-		cout << "7. Снять администратора" << endl;
-		cout << "8. Удалить аккаунт" << endl;
+		cout << "1. Снять администратора" << endl;
+		cout << "2. Верификация аккаунта" << endl;
+		cout << "3. Бан аккаунта" << endl;
+		cout << "4. Разбан аккаунта" << endl;
+		cout << "5. Удаление аккаунта" << endl;
+		cout << "6. Показать всех администраторов" << endl;
+		cout << "7. Показать всех пользователей" << endl;
+		cout << "8. Меню маршрутов" << endl;
 		cout << "9. Вернуться в главное меню" << endl;
 
 		char choise;
@@ -258,44 +260,6 @@ void AdminPanel(int Role)
 		}
 		case '1':
 		{
-			Verification();
-			break;
-		}
-		case '2':
-		{
-			Ban(1);
-			break;
-		}
-		case '3':
-		{
-			Ban(2);
-			break;
-		}
-		case '4':
-		{
-			if (Role == 3)
-			{
-				RoutesEditor();
-			}
-			else
-			{
-				cout << "Вы имеете недостаточный уровень администратора для доступа к данному разделу." << endl;
-				system("pause");
-			}
-			break;
-		}
-		case '5':
-		{
-			ShowAdmins();
-			break;
-		}
-		case '6':
-		{
-			ShowUsers();
-			break;
-		}
-		case '7':
-		{
 			if (Role == 3)
 			{
 				GiveAdmin(2);
@@ -307,11 +271,49 @@ void AdminPanel(int Role)
 			}
 			break;
 		}
-		case '8':
+		case '2':
+		{
+			Verification();
+			break;
+		}
+		case '3':
+		{
+			Ban(1);
+			break;
+		}
+		case '4':
+		{
+			Ban(2);
+			break;
+		}
+		case '5':
 		{
 			if (Role == 3)
 			{
 				DeleteAccount();
+			}
+			else
+			{
+				cout << "Вы имеете недостаточный уровень администратора для доступа к данному разделу." << endl;
+				system("pause");
+			}
+			break;
+		}
+		case '6':
+		{
+			ShowAdmins();
+			break;
+		}
+		case '7':
+		{
+			ShowUsers();
+			break;
+		}
+		case '8':
+		{
+			if (Role == 3)
+			{
+				RoutesMenu();
 			}
 			else
 			{
@@ -340,7 +342,7 @@ void AdminPanel(int Role)
 	}
 }
 
-void RoutesEditor()
+void RoutesMenu()
 {
 	while (true)
 	{
@@ -369,7 +371,7 @@ void RoutesEditor()
 		}
 		case '3':
 		{
-			
+			RouteEdit();
 			break;
 		}
 		case '4':
@@ -651,6 +653,155 @@ void RouteDelete()
 				system("pause");
 				return;
 			}
+		}
+	}
+}
+
+void RouteEdit()
+{
+	system("cls");
+
+	vector<Routes> RoutesList;
+	RoutesList = RoutesImport();
+	RoutesList = RouteSort(RoutesList);
+
+	int chosen;
+	cout << "П/п№\t№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
+	cout << "=========================================================================" << endl;
+	for (unsigned int i = 0; i < RoutesList.size(); i++)
+	{
+		cout << i << "\t" << RoutesList[i].RouteNumber << "\t" << RoutesList[i].BusType << "\t" << RoutesList[i].Destination << "\t\t" << RoutesList[i].Date << "\t" << RoutesList[i].DepTime << "\t" << RoutesList[i].ArrTime << "\t" << RoutesList[i].Price << "\t" << RoutesList[i].TicketsLeft << "\t" << RoutesList[i].TicketsSold << endl;
+	}
+	cout << endl;
+
+	while (true)
+	{
+		cout << "Введите порядковый номер рейса, который вы хотите редактировать: ";
+		cin >> chosen;
+
+		if (chosen < 0 || chosen > RoutesList.size())
+		{
+			cout << "Ошибка: рейс не найден. Повторите ввод..." << endl;
+		}
+		else
+		{
+			break;
+		}
+	}
+
+	system("cls");
+
+	while (true)
+	{
+		bool returning = false;
+		system("cls");
+		cout << "1. Изменить дату отправления" << endl;
+		cout << "2. Изменить время отправления" << endl;
+		cout << "3. Изменить время прибытия" << endl;
+		cout << "4. Изменить стоимость билета" << endl;
+		cout << "5. Изменить количество билетов в продаже" << endl;
+		cout << "6. Вернуться назад" << endl;
+
+		char choise;
+		cout << "\nВведите номер пункта меню: ";
+		cin >> choise;
+
+		switch (choise)
+		{
+		case '1':
+		{
+			system("cls");
+
+			cout << "Введите новую дату отправления (в формате DD.MM.YYYY): ";
+			cin >> RoutesList[chosen].Date;
+			cout << "Дата отправления успешно изменена" << endl;
+			RoutesExport(RoutesList);
+			system("pause");
+
+			break;
+		}
+		case '2':
+		{
+			system("cls");
+
+			cout << "Введите новое время отправления (в формате HH:MM): ";
+			cin >> RoutesList[chosen].DepTime;
+			cout << "Время отправления успешно изменено" << endl;
+			RoutesExport(RoutesList);
+			system("pause");
+
+			break;
+		}
+		case '3':
+		{
+			system("cls");
+
+			cout << "Введите новое время прибытия (в формате HH:MM): ";
+			cin >> RoutesList[chosen].ArrTime;
+			cout << "Время прибытия успешно изменено" << endl;
+			RoutesExport(RoutesList);
+			system("pause");
+
+			break;
+		}
+		case '4':
+		{
+			system("cls");
+			double TPrice;
+			cout << "Введите новую стоимость билета: ";
+			cin >> TPrice;
+
+			if (TPrice < 0)
+			{
+				cout << "Ошибка: вы ввели отрицательную цену" << endl;
+				system("pause");
+				break;
+			}
+
+			RoutesList[chosen].Price = TPrice;
+			cout << "Цена билета успешно изменена" << endl;
+			RoutesExport(RoutesList);
+			system("pause");
+
+			break;
+		}
+		case '5':
+		{
+			system("cls");
+			int TLeftTickets;
+			cout << "Введите новое количество мест в продаже: ";
+			cin >> TLeftTickets;
+
+			if (TLeftTickets < 0)
+			{
+				cout << "Ошибка: вы ввели отрицательное количество" << endl;
+				system("pause");
+				break;
+			}
+
+			RoutesList[chosen].TicketsLeft = TLeftTickets;
+			cout << "Количество мест в продаже успешно изменено" << endl;
+			RoutesExport(RoutesList);
+			system("pause");
+
+			break;
+		}
+		case '6':
+		{
+			returning = true;
+			break;
+		}
+		default:
+		{
+			cout << "Такого пункта меню не существует...\n Повторите ввод" << endl;
+			system("pause");
+			break;
+		}
+		}
+
+		if (returning == true)
+		{
+			break;
 		}
 	}
 }
