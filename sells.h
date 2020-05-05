@@ -4,10 +4,12 @@
 
 void ShowMainMenu(int);
 void AdminPanel(int);
-void RoutesEditor();
+void RoutesMenu();
 void RouteCreate();
 void RouteDelete();
+void RouteEdit();
 void ShowAllRoutes();
 void RouteFind();
 void SellTickets();
+
 #endif

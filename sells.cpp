@@ -679,7 +679,7 @@ void RouteEdit()
 		cout << "Введите порядковый номер рейса, который вы хотите редактировать: ";
 		cin >> chosen;
 
-		if (chosen < 0 || chosen > RoutesList.size())
+		if (chosen < 0 || chosen > (int)RoutesList.size())
 		{
 			cout << "Ошибка: рейс не найден. Повторите ввод..." << endl;
 		}
@@ -830,7 +830,7 @@ void ShowAllRoutes()
 			RouteSpis = RoutesImport();
 			RouteSpis = RouteSortByTime(RouteSpis);
 			
-			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
+			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\t\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
 			cout << "=========================================================================" << endl;
 			for (unsigned int i = 0; i < RouteSpis.size(); i++)
 			{
@@ -847,7 +847,7 @@ void ShowAllRoutes()
 			RouteSpis = RoutesImport();
 			RouteSpis = RouteSort(RouteSpis);
 
-			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
+			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\t\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
 			cout << "=========================================================================" << endl;
 			for (unsigned int i = 0; i < RouteSpis.size(); i++)
 			{
@@ -864,7 +864,7 @@ void ShowAllRoutes()
 			RouteSpis = RoutesImport();
 			RouteSpis = RouteSortByRouteNumber(RouteSpis);
 
-			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
+			cout << "№Марш.\tТип Т/С\tПункт назначения\tДата\t\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
 			cout << "=========================================================================" << endl;
 			for (unsigned int i = 0; i < RouteSpis.size(); i++)
 			{
@@ -1006,7 +1006,7 @@ void SellTickets()
 	{
 		int ind = 0, chosen = 0;
 		system("cls");
-		cout << "П/п№\t№Марш.\tТип Т/С\tПункт назначения\tДата\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
+		cout << "П/п№\t№Марш.\tТип Т/С\tПункт назначения\tДата\t\tОтпр.\tПриб.\tЦена\tСвоб.\tПрод." << endl;
 		cout << "=========================================================================" << endl;
 		for (unsigned int i = 0; i < RoutesList.size(); i++)
 		{
